@@ -1,13 +1,14 @@
+import java.util.Arrays;
 import java.util.Random;
 
-public class Puzzle{
+public class Puzzle {
 
     private int size;
     private int[][] puzzleArray;
     private static int[][] goalState;
     private int zeroColumn;
     private int zeroRow;
-    private boolean isGoalState;
+    private boolean isSolved;
 
     public Puzzle(int size) {
         this.size = size;
@@ -16,40 +17,25 @@ public class Puzzle{
         randomize();
     }
 
-    // может лучше передать size как аргумент?
+    // TODO может лучше передать size как аргумент?
     public void populate() {
         puzzleArray = new int[size][size];
         goalState = new int[size][size];
         for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++){
-                puzzleArray[i][j] = (i * size) + j;
-                goalState[i][j] = (i * size) + j;
+            for (int j = 0; j < size; j++) {
+                puzzleArray[i][j] = (i * size) + j + 1;
+                goalState[i][j] = (i * size) + j + 1;
             }
         }
-        setZeroRow(0);
-        setZeroColumn(0);
-        isGoalState = true;
+        puzzleArray[size - 1][size - 1] = 0;
+        goalState[size - 1][size - 1] = 0;
+        setZeroRow(size - 1);
+        setZeroColumn(size - 1);
+        isSolved = true;
     }
 
-    // я думаю над тем чтобы вместо этого сделать адаптер
-    public void checkCommand(String s) {
-        switch (s) {
-            case "a":
-               moveLeft();
-                break;
-            case "d":
-                moveRight();
-                break;
-            case "w":
-                moveUp();
-                break;
-            case "s":
-                moveDown();
-                break;
-        }
-    }
-
-    public void randomize(){
+    // this method guarantees that puzzle is solvable by shuffling already solved puzzle according to the game rules
+    public void randomize() {
         Random random = new Random();
         for (int i = 0; i < size * 100; i++) {
             switch (random.nextInt(4)) {
@@ -72,96 +58,78 @@ public class Puzzle{
                     }
                     break;
                 case (3):
-                    if(moveDown()){
+                    if (moveDown()) {
                     } else {
                         i--;
                     }
                     break;
             }
         }
+        if (Arrays.equals(puzzleArray, goalState))
+            randomize();
+        else isSolved = false;
     }
 
-    // как переписать эти методы чтобы не было повторяющегося кода
-    public boolean moveLeft(){
+    public boolean moveLeft() {
         if (getZeroColumn() <= 0)
             return false;
         int temp = puzzleArray[zeroRow][zeroColumn - 1];
         puzzleArray[zeroRow][zeroColumn - 1] = 0;
         puzzleArray[zeroRow][zeroColumn] = temp;
         setZeroColumn(getZeroColumn() - 1);
+        checkIfSolved();
         return true;
     }
 
 
-    public boolean moveRight(){
+    public boolean moveRight() {
         if (getZeroColumn() >= getSize() - 1)
             return false;
         int temp = puzzleArray[zeroRow][zeroColumn + 1];
         puzzleArray[zeroRow][zeroColumn + 1] = 0;
         puzzleArray[zeroRow][zeroColumn] = temp;
         setZeroColumn(getZeroColumn() + 1);
+        checkIfSolved();
         return true;
     }
 
-    public boolean moveUp(){
+    public boolean moveUp() {
         if (getZeroRow() <= 0)
             return false;
         int temp = puzzleArray[zeroRow - 1][zeroColumn];
         puzzleArray[zeroRow - 1][zeroColumn] = 0;
         puzzleArray[zeroRow][zeroColumn] = temp;
         setZeroRow(getZeroRow() - 1);
+        checkIfSolved();
         return true;
     }
 
-    public boolean moveDown(){
-        if(getZeroRow() >= getSize() - 1)
+    public boolean moveDown() {
+        if (getZeroRow() >= getSize() - 1)
             return false;
         int temp = puzzleArray[zeroRow + 1][zeroColumn];
         puzzleArray[zeroRow + 1][zeroColumn] = 0;
         puzzleArray[zeroRow][zeroColumn] = temp;
         setZeroRow(getZeroRow() + 1);
+        checkIfSolved();
         return true;
     }
 
-    public void setSize(int size) {
-        this.size = size;
-    }
-
-    public void setPuzzleArray(int[][] puzzleArray) {
-        this.puzzleArray = puzzleArray;
-    }
-
-    public static int[][] getGoalState() {
-        return goalState;
-    }
-
-    public static void setGoalState(int[][] goalState) {
-        Puzzle.goalState = goalState;
+    private boolean checkIfSolved() {
+        if (Arrays.deepEquals(puzzleArray, goalState)) {
+            isSolved = true;
+            return true;
+        } else return false;
     }
 
     public int getZeroColumn() {
         return zeroColumn;
     }
 
-    public void setZeroColumn(int zeroColumn) {
-        this.zeroColumn = zeroColumn;
-    }
-
     public int getZeroRow() {
         return zeroRow;
     }
 
-    public void setZeroRow(int zeroRow) {
-        this.zeroRow = zeroRow;
-    }
-
-    public boolean isGoalState() {
-        return isGoalState;
-    }
-
-    public void setGoalState(boolean goalState) {
-        isGoalState = goalState;
-    }
     public int getSize() {
         return size;
     }
@@ -170,4 +138,23 @@ public class Puzzle{
         return puzzleArray;
     }
 
+    public boolean isSolved() {
+        return isSolved;
+    }
+
+     void setZeroColumn(int zeroColumn) {
+        this.zeroColumn = zeroColumn;
+    }
+
+     void setZeroRow(int zeroRow) {
+        this.zeroRow = zeroRow;
+    }
+
+     void setPuzzleArray(int[][] puzzleArray) {
+        this.puzzleArray = puzzleArray;
+    }
+
+     static void setGoalState(int[][] goalState) {
+        Puzzle.goalState = goalState;
+    }
 }
