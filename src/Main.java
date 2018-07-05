@@ -3,19 +3,30 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
+
         Scanner scanner = new Scanner(System.in);
-        System.err.println("Welcome to the 15 Puzzle game!");
-        boolean isRunning = true;
+        System.out.println("Welcome to the 15 Puzzle game!");
+        String input = "";
 
-        // TODO at this point size is hadcoded here, but it can be easily set from input
-        Puzzle puzzle = new Puzzle(4);
+        while(!input.matches("[2-6]")){
+            System.out.println("Please enter the whole number from 2 to 6 to set the shape of puzzle array.");
+            input = scanner.nextLine();
+        }
+
+        int size = Integer.parseInt(input);
+        Puzzle puzzle = new Puzzle(size);
         ConsoleView screen = new ConsoleView(puzzle);
-        System.err.println("You will need to move zero cell with W A S D control keys");
-        screen.renderPuzzle();
+        ConsoleController controller = new ConsoleController(puzzle);
+        System.out.println("You will need to move zero cell with W A S D control keys.");
+        screen.printPuzzle();
 
+        boolean isRunning = true;
         while (isRunning) {
-            movePuzzle(scanner.nextLine(),puzzle);
-            screen.renderPuzzle();
+            boolean moved = controller.movePuzzle(scanner.nextLine());
+            if(!moved){
+                System.out.println("Invalid command! Please use W A S D keys.");
+            }
+            screen.printPuzzle();
             if(puzzle.isSolved()){
                 isRunning = false;
                 System.out.println("Congratulations! You won the game! :)");
@@ -24,20 +35,4 @@ public class Main {
 
     }
 
-    static void movePuzzle(String command, Puzzle puzzle) {
-        switch (command.charAt(0)) {
-            case 'a':
-                puzzle.moveLeft();
-                break;
-            case 'd':
-                puzzle.moveRight();
-                break;
-            case 'w':
-                puzzle.moveUp();
-                break;
-            case 's':
-                puzzle.moveDown();
-                break;
-        }
-    }
 }

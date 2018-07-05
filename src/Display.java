@@ -1,3 +1,6 @@
-public interface Display {
-    void renderPuzzle();
+
+interface Display {
+
+    void printPuzzle();
+
 }

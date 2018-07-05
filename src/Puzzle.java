@@ -1,33 +1,33 @@
 import java.util.Arrays;
 import java.util.Random;
 
-public class Puzzle {
+class Puzzle {
 
     private int size;
-    private int[][] puzzleArray;
-    private static int[][] goalState;
-    private int zeroColumn;
-    private int zeroRow;
-    private boolean isSolved;
+    private int[][] puzzleMatrix; // randomized matrix to be solved
+    private static int[][] goalMatrix; //  state we want to achieve
+    private int zeroColumn; // column position of zero
+    private int zeroRow;  // row position of zero
+    private boolean isSolved; // indicates if we reached goalState
 
     Puzzle(int size) {
         this.size = size;
-        puzzleArray = new int[size][size];
+        puzzleMatrix = new int[size][size];
         populate();
         randomize();
     }
 
     private void populate() {
-        puzzleArray = new int[size][size];
-        goalState = new int[size][size];
+        puzzleMatrix = new int[size][size];
+        goalMatrix = new int[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                puzzleArray[i][j] = (i * size) + j + 1;
-                goalState[i][j] = (i * size) + j + 1;
+                puzzleMatrix[i][j] = (i * size) + j + 1;
+                goalMatrix[i][j] = (i * size) + j + 1;
             }
         }
-        puzzleArray[size - 1][size - 1] = 0;
-        goalState[size - 1][size - 1] = 0;
+        puzzleMatrix[size - 1][size - 1] = 0;
+        goalMatrix[size - 1][size - 1] = 0;
         setZeroRow(size - 1);
         setZeroColumn(size - 1);
         isSolved = true;
@@ -51,17 +51,20 @@ public class Puzzle {
                     i = moveDown() ? i : i-1;
                     break;
             }
-        if (Arrays.equals(puzzleArray, goalState))
-            randomize();
+        if (Arrays.equals(puzzleMatrix, goalMatrix))
+            randomize(); // to make sure that array has been shuffled
         else isSolved = false;
+    }
+
+    private void swapTiles(int i, int j, int k, int l){
+        puzzleMatrix[i][j] = puzzleMatrix[k][l];
+        puzzleMatrix[k][l] = 0;
     }
 
     boolean moveLeft() {
         if (getZeroColumn() <= 0)
             return false;
-        int temp = puzzleArray[zeroRow][zeroColumn - 1];
-        puzzleArray[zeroRow][zeroColumn - 1] = 0;
-        puzzleArray[zeroRow][zeroColumn] = temp;
+        swapTiles(zeroRow,zeroColumn,zeroRow,zeroColumn-1);
         setZeroColumn(getZeroColumn() - 1);
         checkIfSolved();
         return true;
@@ -71,9 +74,7 @@ public class Puzzle {
     boolean moveRight() {
         if (getZeroColumn() >= getSize() - 1)
             return false;
-        int temp = puzzleArray[zeroRow][zeroColumn + 1];
-        puzzleArray[zeroRow][zeroColumn + 1] = 0;
-        puzzleArray[zeroRow][zeroColumn] = temp;
+        swapTiles(zeroRow,zeroColumn,zeroRow,zeroColumn+1);
         setZeroColumn(getZeroColumn() + 1);
         checkIfSolved();
         return true;
@@ -82,9 +83,7 @@ public class Puzzle {
     boolean moveUp() {
         if (getZeroRow() <= 0)
             return false;
-        int temp = puzzleArray[zeroRow - 1][zeroColumn];
-        puzzleArray[zeroRow - 1][zeroColumn] = 0;
-        puzzleArray[zeroRow][zeroColumn] = temp;
+        swapTiles(zeroRow,zeroColumn,zeroRow-1,zeroColumn);
         setZeroRow(getZeroRow() - 1);
         checkIfSolved();
         return true;
@@ -93,16 +92,14 @@ public class Puzzle {
     boolean moveDown() {
         if (getZeroRow() >= getSize() - 1)
             return false;
-        int temp = puzzleArray[zeroRow + 1][zeroColumn];
-        puzzleArray[zeroRow + 1][zeroColumn] = 0;
-        puzzleArray[zeroRow][zeroColumn] = temp;
+        swapTiles(zeroRow,zeroColumn,zeroRow+1,zeroColumn);
         setZeroRow(getZeroRow() + 1);
         checkIfSolved();
         return true;
     }
 
     private boolean checkIfSolved() {
-        if (Arrays.deepEquals(puzzleArray, goalState)) {
+        if (Arrays.deepEquals(puzzleMatrix, goalMatrix)) {
             isSolved = true;
             return true;
         } else return false;
@@ -120,24 +117,20 @@ public class Puzzle {
         return size;
     }
 
-    int[][] getPuzzleArray() {
-        return puzzleArray;
+    int[][] getPuzzleMatrix() {
+        return puzzleMatrix;
     }
 
     boolean isSolved() {
         return isSolved;
     }
 
-    void setZeroColumn(int zeroColumn) {
+    private void setZeroColumn(int zeroColumn) {
         this.zeroColumn = zeroColumn;
     }
 
-    void setZeroRow(int zeroRow) {
+    private void setZeroRow(int zeroRow) {
         this.zeroRow = zeroRow;
-    }
-
-    void setPuzzleArray(int[][] puzzleArray) {
-        this.puzzleArray = puzzleArray;
     }
 
 }
