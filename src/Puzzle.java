@@ -10,15 +10,14 @@ public class Puzzle {
     private int zeroRow;
     private boolean isSolved;
 
-    public Puzzle(int size) {
+    Puzzle(int size) {
         this.size = size;
         puzzleArray = new int[size][size];
         populate();
         randomize();
     }
 
-    // TODO может лучше передать size как аргумент?
-    public void populate() {
+    private void populate() {
         puzzleArray = new int[size][size];
         goalState = new int[size][size];
         for (int i = 0; i < size; i++) {
@@ -35,42 +34,29 @@ public class Puzzle {
     }
 
     // this method guarantees that puzzle is solvable by shuffling already solved puzzle according to the game rules
-    public void randomize() {
+    private void randomize() {
         Random random = new Random();
-        for (int i = 0; i < size * 100; i++) {
+        for (int i = 0; i < size * 100; i++)
             switch (random.nextInt(4)) {
                 case (0):
-                    if (moveLeft()) {
-                    } else {
-                        i--;
-                    }
+                    i = moveLeft() ? i : i-1;
                     break;
                 case (1):
-                    if (moveRight()) {
-                    } else {
-                        i--;
-                    }
+                    i = moveRight() ? i : i-1;
                     break;
                 case (2):
-                    if (moveUp()) {
-                    } else {
-                        i--;
-                    }
+                    i = moveUp() ? i : i-1;
                     break;
                 case (3):
-                    if (moveDown()) {
-                    } else {
-                        i--;
-                    }
+                    i = moveDown() ? i : i-1;
                     break;
             }
-        }
         if (Arrays.equals(puzzleArray, goalState))
             randomize();
         else isSolved = false;
     }
 
-    public boolean moveLeft() {
+    boolean moveLeft() {
         if (getZeroColumn() <= 0)
             return false;
         int temp = puzzleArray[zeroRow][zeroColumn - 1];
@@ -82,7 +68,7 @@ public class Puzzle {
     }
 
 
-    public boolean moveRight() {
+    boolean moveRight() {
         if (getZeroColumn() >= getSize() - 1)
             return false;
         int temp = puzzleArray[zeroRow][zeroColumn + 1];
@@ -93,7 +79,7 @@ public class Puzzle {
         return true;
     }
 
-    public boolean moveUp() {
+    boolean moveUp() {
         if (getZeroRow() <= 0)
             return false;
         int temp = puzzleArray[zeroRow - 1][zeroColumn];
@@ -104,7 +90,7 @@ public class Puzzle {
         return true;
     }
 
-    public boolean moveDown() {
+    boolean moveDown() {
         if (getZeroRow() >= getSize() - 1)
             return false;
         int temp = puzzleArray[zeroRow + 1][zeroColumn];
@@ -122,39 +108,36 @@ public class Puzzle {
         } else return false;
     }
 
-    public int getZeroColumn() {
+    int getZeroColumn() {
         return zeroColumn;
     }
 
-    public int getZeroRow() {
+    int getZeroRow() {
         return zeroRow;
     }
 
-    public int getSize() {
+    int getSize() {
         return size;
     }
 
-    public int[][] getPuzzleArray() {
+    int[][] getPuzzleArray() {
         return puzzleArray;
     }
 
-    public boolean isSolved() {
+    boolean isSolved() {
         return isSolved;
     }
 
-     void setZeroColumn(int zeroColumn) {
+    void setZeroColumn(int zeroColumn) {
         this.zeroColumn = zeroColumn;
     }
 
-     void setZeroRow(int zeroRow) {
+    void setZeroRow(int zeroRow) {
         this.zeroRow = zeroRow;
     }
 
-     void setPuzzleArray(int[][] puzzleArray) {
+    void setPuzzleArray(int[][] puzzleArray) {
         this.puzzleArray = puzzleArray;
     }
 
-     static void setGoalState(int[][] goalState) {
-        Puzzle.goalState = goalState;
-    }
 }

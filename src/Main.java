@@ -24,18 +24,18 @@ public class Main {
 
     }
 
-    public static void movePuzzle(String command, Puzzle puzzle) {
-        switch (command) {
-            case "a":
+    static void movePuzzle(String command, Puzzle puzzle) {
+        switch (command.charAt(0)) {
+            case 'a':
                 puzzle.moveLeft();
                 break;
-            case "d":
+            case 'd':
                 puzzle.moveRight();
                 break;
-            case "w":
+            case 'w':
                 puzzle.moveUp();
                 break;
-            case "s":
+            case 's':
                 puzzle.moveDown();
                 break;
         }

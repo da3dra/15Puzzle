@@ -2,7 +2,7 @@ public class ConsoleView implements Display {
 
     private Puzzle puzzle;
 
-    public ConsoleView(Puzzle puzzle) {
+    ConsoleView(Puzzle puzzle) {
         this.puzzle = puzzle;
     }
 
@@ -15,11 +15,5 @@ public class ConsoleView implements Display {
             System.out.println();
         }
     }
-
-/*    public void renderPuzzle() {
-        Arrays.stream(puzzle.getPuzzleArray())
-                .flatMapToInt(x -> Arrays.stream(x)).
-                        forEach(digit ->  System.out.printf("%3d", digit));
-    }*/
 
 }
