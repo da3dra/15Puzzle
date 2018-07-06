@@ -21,8 +21,10 @@ public class Main {
         screen.printPuzzle();
 
         boolean isRunning = true;
+        boolean moved;
+
         while (isRunning) {
-            boolean moved = controller.movePuzzle(scanner.nextLine());
+            moved = controller.movePuzzle(scanner.nextLine());
             if(!moved){
                 System.out.println("Invalid command! Please use W A S D keys.");
             }

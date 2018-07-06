@@ -1,5 +1,5 @@
 
-class ConsoleView implements Display {
+class ConsoleView {
 
     private Puzzle puzzle;
 

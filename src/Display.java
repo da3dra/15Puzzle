@@ -1,6 +1,0 @@
-
-interface Display {
-
-    void printPuzzle();
-
-}

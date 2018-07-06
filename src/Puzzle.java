@@ -17,6 +17,7 @@ class Puzzle {
         randomize();
     }
 
+    // fills the matrix in correct order
     private void populate() {
         puzzleMatrix = new int[size][size];
         goalMatrix = new int[size][size];
@@ -51,9 +52,10 @@ class Puzzle {
                     i = moveDown() ? i : i-1;
                     break;
             }
-        if (Arrays.equals(puzzleMatrix, goalMatrix))
-            randomize(); // to make sure that array has been shuffled
-        else isSolved = false;
+        if (Arrays.equals(puzzleMatrix, goalMatrix)){ // to make sure that array has been shuffled
+            randomize();
+        }
+        else {isSolved = false;}
     }
 
     private void swapTiles(int i, int j, int k, int l){
