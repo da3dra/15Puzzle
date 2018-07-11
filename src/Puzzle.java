@@ -37,25 +37,23 @@ class Puzzle {
     // this method guarantees that puzzle is solvable by shuffling already solved puzzle according to the game rules
     private void randomize() {
         Random random = new Random();
-        for (int i = 0; i < size * 100; i++)
-            switch (random.nextInt(4)) {
-                case (0):
-                    i = moveLeft() ? i : i-1;
-                    break;
-                case (1):
-                    i = moveRight() ? i : i-1;
-                    break;
-                case (2):
-                    i = moveUp() ? i : i-1;
-                    break;
-                case (3):
-                    i = moveDown() ? i : i-1;
-                    break;
+        int rand;
+        for (int i = 0; i < size * 100; i++){
+            rand = random.nextInt(4);
+            if(rand==0){
+                i = moveLeft() ? i : i-1;
             }
-        if (Arrays.equals(puzzleMatrix, goalMatrix)){ // to make sure that array has been shuffled
-            randomize();
+            else if(rand==1){
+                i = moveRight() ? i : i-1;
+            }
+            else if(rand==2){
+                i = moveUp() ? i : i-1;
+            }
+            else{
+                i = moveDown() ? i : i-1;
+            }
         }
-        else {isSolved = false;}
+        isSolved = false;
     }
 
     private void swapTiles(int i, int j, int k, int l){
