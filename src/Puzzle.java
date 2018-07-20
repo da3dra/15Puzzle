@@ -18,7 +18,7 @@ class Puzzle {
     }
 
     // fills the matrix in correct order
-    private void populate() {
+    void populate() {
         puzzleMatrix = new int[size][size];
         goalMatrix = new int[size][size];
         for (int i = 0; i < size; i++) {
@@ -35,7 +35,7 @@ class Puzzle {
     }
 
     // this method guarantees that puzzle is solvable by shuffling already solved puzzle according to the game rules
-    private void randomize() {
+    void randomize() {
         Random random = new Random();
         int rand;
         for (int i = 0; i < size * 100; i++){
@@ -125,12 +125,15 @@ class Puzzle {
         return isSolved;
     }
 
-    private void setZeroColumn(int zeroColumn) {
+    void setZeroColumn(int zeroColumn) {
         this.zeroColumn = zeroColumn;
     }
 
-    private void setZeroRow(int zeroRow) {
+    void setZeroRow(int zeroRow) {
         this.zeroRow = zeroRow;
     }
 
+    void setPuzzleMatrix(int[][] puzzleMatrix) {
+        this.puzzleMatrix = puzzleMatrix;
+    }
 }
