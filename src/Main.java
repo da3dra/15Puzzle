@@ -17,23 +17,9 @@ public class Main {
         Puzzle puzzle = new Puzzle(size);
         ConsoleView screen = new ConsoleView(puzzle);
         ConsoleController controller = new ConsoleController(puzzle);
-        System.out.println("You will need to move zero cell with W A S D control keys.");
-        screen.printPuzzle();
+        PuzzleGame game = new PuzzleGame(puzzle, screen, controller);
 
-        boolean isRunning = true;
-        boolean moved;
-
-        while (isRunning) {
-            moved = controller.movePuzzle(scanner.nextLine());
-            if(!moved){
-                System.out.println("Invalid command! Please use W A S D keys.");
-            }
-            screen.printPuzzle();
-            if(puzzle.isSolved()){
-                isRunning = false;
-                System.out.println("Congratulations! You won the game! :)");
-            }
-        }
+        game.run(scanner);
 
     }
 
