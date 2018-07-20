@@ -1,5 +1,5 @@
 
-class ConsoleController {
+class ConsoleController implements Controller{
 
     private Puzzle puzzle;
 
@@ -7,7 +7,7 @@ class ConsoleController {
         this.puzzle = puzzle;
     }
 
-    boolean movePuzzle(String command) {
+    public boolean movePuzzle(String command) {
         if(command.equalsIgnoreCase("w")){
             puzzle.moveUp();
         }else if(command.equalsIgnoreCase("s")){

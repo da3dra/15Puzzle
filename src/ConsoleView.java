@@ -1,5 +1,5 @@
 
-class ConsoleView {
+class ConsoleView implements View {
 
     private Puzzle puzzle;
 
