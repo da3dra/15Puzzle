@@ -4,22 +4,21 @@ public class Main {
 
     public static void main(String[] args) {
 
+        ConsoleGame game = new ConsoleGame();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Welcome to the 15 Puzzle game!");
-        String input = "";
+        game.setScanner(scanner);
 
-        while(!input.matches("[2-6]")){
-            System.out.println("Please enter the whole number from 2 to 6 to set the shape of puzzle array.");
-            input = scanner.nextLine();
-        }
+        game.welcome();
 
-        int size = Integer.parseInt(input);
+        int size = game.getPuzzleDimension();
         Puzzle puzzle = new Puzzle(size);
+        game.setPuzzle(puzzle);
         ConsoleView screen = new ConsoleView(puzzle);
         ConsoleController controller = new ConsoleController(puzzle);
-        PuzzleGame game = new PuzzleGame(puzzle, screen, controller);
+        game.setController(controller);
+        game.setView(screen);
 
-        game.run(scanner);
+        game.run();
 
     }
 
