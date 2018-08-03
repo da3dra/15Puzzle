@@ -13,8 +13,8 @@ public class Main {
         int size = game.getPuzzleDimension();
         Puzzle puzzle = new Puzzle(size);
         game.setPuzzle(puzzle);
-        ConsoleView screen = new ConsoleView(puzzle);
-        ConsoleController controller = new ConsoleController(puzzle);
+        View screen = new ConsoleView(puzzle);
+        Controller controller = new ConsoleController(puzzle);
         game.setController(controller);
         game.setView(screen);
 

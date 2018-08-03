@@ -1,5 +1,5 @@
 public interface View {
 
-    public void printPuzzle();
+    void printPuzzle();
 
 }
